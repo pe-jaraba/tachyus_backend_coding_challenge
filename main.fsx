@@ -114,8 +114,13 @@ let main () =
     let v1 = [|1.0; 2.0; 5.0|]
     let v2 = [|3.0; 2.0; 4.0|]
     let v3 = [|3.0; 1.0; 0.0|]
-    let res = gramSchmidt([|v1; v2; v3|])
-    printfn "The orthonormal vectors are"
+    let V = [|v1; v2; v3|]
+    printfn "The original vectors are"
+    printfn "%A" V
+    let res = gramSchmidt(V)
+    printfn "The input vectors after the process are"
+    printfn "%A" V
+    printfn "The resulting orthonormal vectors are"
     printfn "%A" res
     let inner = dot(res)
     printfn "If the vectors are orthonormal, the inner product of the resulting vectors should be 0, or at least really close."
