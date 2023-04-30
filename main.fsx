@@ -1,3 +1,4 @@
+// Substracts two vectors
 let rec _subtract (u: array<float>, v: array<float>, i: int, accum: array<float>) = 
     if i = u.Length then
         accum
@@ -8,6 +9,7 @@ let rec _subtract (u: array<float>, v: array<float>, i: int, accum: array<float>
 let subtract (u: array<float>, v: array<float>) =
     _subtract(u, v, 0, Array.zeroCreate<float> u.Length)
 
+// Adds two vectors
 let rec _sum (u: array<float>, v: array<float>, i: int, accum: array<float>) = 
     if i = u.Length then
         accum
@@ -18,6 +20,7 @@ let rec _sum (u: array<float>, v: array<float>, i: int, accum: array<float>) =
 let sum (u: array<float>, v: array<float>) =
     _sum(u, v, 0, Array.zeroCreate<float> u.Length)
 
+// Multiplies a vector by a scalar
 let rec _scale (x: float, v: array<float>, i: int, accum: array<float>) =
     if i = v.Length then
         accum
@@ -28,6 +31,7 @@ let rec _scale (x: float, v: array<float>, i: int, accum: array<float>) =
 let scale (x: float, v: array<float>) =
     _scale(x, v, 0, Array.zeroCreate<float> v.Length)
 
+// Multiplies the ith element of each vector in V
 let rec _multiplyAt (V: array<array<float>>, index: int, i: int, accum: float) =
     if i = V.Length then
         accum
@@ -40,6 +44,7 @@ let rec _multiplyAt (V: array<array<float>>, index: int, i: int, accum: float) =
 let multiplyAt (V: array<array<float>>, index: int) =
     _multiplyAt(V, index, 0, 0.0)
 
+// Dot product of an array of vectors
 let rec _dot (V: array<array<float>>, i: int, accum: float) =
     // assuming vectors of same length
     if i = V.[0].Length then
@@ -51,11 +56,13 @@ let rec _dot (V: array<array<float>>, i: int, accum: float) =
 let dot (V: array<array<float>>) =
     _dot(V, 0, 0.0)
 
+// Projects v onto u
 let project (u: array<float>, v: array<float>) =
     let vu = dot([|v; u|])
     let uu = dot([|u; u|])
     scale(vu / uu, u)
 
+// Sums the projections of v onto the vectors in U
 let rec _sumOfProjections (v: array<float>, U: list<array<float>>, i: int, accum: array<float>) =
     if i = U.Length then
         accum
@@ -67,13 +74,16 @@ let rec _sumOfProjections (v: array<float>, U: list<array<float>>, i: int, accum
 let sumOfProjections (v: array<float>, U: list<array<float>>) =
     _sumOfProjections(v, U, 0, Array.zeroCreate<float> v.Length)
 
+// Magnitude of a vector
 let magnitude(v: array<float>) =
     sqrt(dot([|v; v|]))
 
+// Normalizes a vector
 let normalize(v: array<float>) =
     let mag = magnitude(v)
     scale(1.0 / mag, v)
 
+// Gram-Schmidt algorithm
 let rec _gramSchmidt (V: array<array<float>>, i: int, U: list<array<float>>) =
     if i = V.Length then
         U |> List.toArray
